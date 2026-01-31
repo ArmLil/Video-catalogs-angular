@@ -1,0 +1,88 @@
+<div class="movie-detail" [@pageAnimation]>
+  <div class="u-container">
+    <button class="movie-detail__back-btn" (click)="goBack()" aria-label="Go back">
+      <svg class="movie-detail__back-icon" viewBox="0 0 24 24">
+        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+      </svg>
+      Back to movies
+    </button>
+
+    <div *ngIf="isLoading()" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading movie details...</p>
+    </div>
+
+    <div *ngIf="error() && !isLoading()" class="error-state">
+      <p>{{ error() }}</p>
+      <button (click)="loadMovie()" class="retry-button">Try Again</button>
+    </div>
+
+    <div *ngIf="!isLoading() && !error() && movie()" 
+         class="movie-detail__content"
+         [@contentAnimation]>
+      <header class="movie-detail__header">
+        <h1 class="movie-detail__title">{{ movie()!.title }}</h1>
+        <div class="movie-detail__meta">
+          <span class="movie-detail__year">{{ movie()!.year }}</span>
+          <span class="movie-detail__dot">•</span>
+          <span class="movie-detail__duration">{{ movie()!.duration }}</span>
+          <span class="movie-detail__dot">•</span>
+          <span class="movie-detail__country">{{ movie()!.country }}</span>
+        </div>
+      </header>
+
+      <div class="movie-detail__main">
+        <div class="movie-detail__poster-section">
+          <div class="movie-detail__poster-container">
+            <img 
+              [src]="movie()!.poster" 
+              [alt]="movie()!.title + ' poster'"
+              class="movie-detail__poster"
+              loading="lazy"
+            />
+            <div class="movie-detail__rating-badge" [class]="'movie-detail__rating-badge--' + getRatingColor(movie()!.rating)">
+              {{ movie()!.rating.toFixed(1) }}
+            </div>
+          </div>
+        </div>
+
+        <div class="movie-detail__info-section">
+          <section class="movie-detail__section">
+            <h2 class="movie-detail__section-title">Genres</h2>
+            <div class="movie-detail__genres">
+              <span *ngFor="let genre of movie()!.genre" class="movie-detail__genre">
+                {{ genre }}
+              </span>
+            </div>
+          </section>
+
+          <section class="movie-detail__section">
+            <h2 class="movie-detail__section-title">Director</h2>
+            <p class="movie-detail__director">{{ movie()!.director }}</p>
+          </section>
+
+          <section class="movie-detail__section">
+            <h2 class="movie-detail__section-title">Cast</h2>
+            <div class="movie-detail__actors">
+              <span *ngFor="let actor of movie()!.actors" class="movie-detail__actor">
+                {{ actor }}
+              </span>
+            </div>
+          </section>
+
+          <section class="movie-detail__section">
+            <h2 class="movie-detail__section-title">Plot</h2>
+            <p class="movie-detail__plot">{{ movie()!.plot }}</p>
+          </section>
+        </div>
+      </div>
+
+      <section class="movie-detail__recommendations">
+        <h2 class="movie-detail__section-title">About this movie</h2>
+        <p class="movie-detail__recommendations-text">
+          Released in {{ movie()!.year }}, this {{ movie()!.genre.join('/') }} film was directed by {{ movie()!.director }}.
+        </p>
+      </section>
+    </div>
+  </div>
+</div>

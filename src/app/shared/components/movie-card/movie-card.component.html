@@ -1,0 +1,59 @@
+<a 
+  [routerLink]="['/movie', movie.id]" 
+  class="movie-card"
+  [@cardAnimation]
+  [@hoverAnimation]="hoverState"
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()"
+  [attr.aria-label]="'View details of ' + movie.title"
+>
+  <article class="movie-card__inner">
+    <div class="movie-card__image-container">
+      <img 
+        [src]="movie.poster" 
+        [alt]="movie.title + ' poster'"
+        class="movie-card__image"
+        loading="lazy"
+      />
+      <div class="movie-card__rating" [class]="'movie-card__rating--' + ratingColor">
+        {{ movie.rating.toFixed(1) }}
+      </div>
+    </div>
+
+    <div class="movie-card__content">
+      <header class="movie-card__header">
+        <h2 class="movie-card__title">{{ movie.title }}</h2>
+        <div class="movie-card__meta">
+          <span class="movie-card__year">{{ movie.year }}</span>
+          <span class="movie-card__dot">•</span>
+          <span class="movie-card__duration">{{ movie.duration }}</span>
+        </div>
+      </header>
+
+      <div class="movie-card__genres">
+        <span *ngFor="let genre of movie.genre.slice(0, 2)" 
+              class="movie-card__genre">
+          {{ genre }}
+        </span>
+        <span *ngIf="movie.genre.length > 2" class="movie-card__genre-more">
+          +{{ movie.genre.length - 2 }} more
+        </span>
+      </div>
+
+      <p class="movie-card__director">
+        <strong>Director:</strong> {{ movie.director }}
+      </p>
+
+      <p class="movie-card__plot">
+        {{ (movie.plot.length > 120 ? movie.plot.substring(0, 120) + '...' : movie.plot) }}
+      </p>
+
+      <div class="movie-card__link">
+        <span class="movie-card__link-text">View Details</span>
+        <svg class="movie-card__link-icon" viewBox="0 0 24 24">
+          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+        </svg>
+      </div>
+    </div>
+  </article>
+</a>
